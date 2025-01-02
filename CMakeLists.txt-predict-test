@@ -1,0 +1,25 @@
+# opp_tflite/CMakeLists.txt-predict-test
+cmake_minimum_required(VERSION 3.16)
+project(predict-test C CXX)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+find_package(Tflite REQUIRED) # Tflite_INCLUDE_DIR, Tflite_LIBRARY
+
+#add_library(tensorflowlite_flex SHARED IMPORTED)
+#set_property(TARGET tensorflowlite_flex PROPERTY
+#  IMPORTED_LOCATION "/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex/libtensorflowlite_flex.so")
+
+include_directories("${Tflite_INCLUDE_DIR}")
+add_executable(predict-test
+    predict-test.cpp
+)
+#message(STATUS "Tflite_LIBRARY=${Tflite_LIBRARY}")
+
+# need --no-as-needed option
+# https://github.com/tensorflow/tensorflow/issues/55536
+target_link_libraries(predict-test
+    -Wl,--no-as-needed
+    ${Tflite_LIBRARY}
+    #tensorflowlite_flex
+)
+

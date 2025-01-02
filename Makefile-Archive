@@ -1,0 +1,45 @@
+# opp_tflite/Makefile-Archive
+# how to use
+# $ make -fMakefile-Archive
+# $ make -fMakefile-Archive install
+# $ make -fMakefile-Archive clean
+HDIR = -I /usr/include/opencv4 -I/home/nishi/usr/local/include/tensorflow-lite -I /home/nishi/usr/local/tflite-test/include
+LIBDIR = -L/home/nishi/usr/local/lib/tensorflow-lite -L/home/nishi/usr/local/tflite-test/lib
+
+OPT0 = -ltensorflow-lite -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_highgui
+
+# minimal option
+#CXX_FLAGS = -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread
+#CXX_FLAGS = -DEIGEN_NEON_GEBP_NR=4 -DTFL_STATIC_LIBRARY_BUILD -pthread
+#CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+#-- label_image option
+CXX_FLAGS = -O3 -DNDEBUG -fPIE -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread -std=gnu++17
+CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DEIGEN_MPL2_ONLY -DNOMINMAX=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+#CC=/usr/bin/c++
+
+TFLITE_SRC_DIR=/home/nishi/local/tensorflow/tensorflow-2.16.2/tensorflow/lite
+
+#EXT_OBJS = command_line_flags.o delegate_provider.o default_execution_provider.o utils.o tool_params.o xnnpack_delegate_provider.o xnnpack_plugin.o
+
+LIB_DIR=/home/nishi/usr/local/lib/tensorflow-lite
+
+arcive:
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/command_line_flags.cc $(HDIR) -o command_line_flags.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/delegates/default_execution_provider.cc $(HDIR) -o default_execution_provider.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/delegates/delegate_provider.cc $(HDIR) -o delegate_provider.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/evaluation/utils.cc $(HDIR) -o utils.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/tool_params.cc $(HDIR) -o tool_params.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/tools/delegates/xnnpack_delegate_provider.cc $(HDIR) -o xnnpack_delegate_provider.o
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  $(TFLITE_SRC_DIR)/core/acceleration/configuration/c/xnnpack_plugin.cc $(HDIR) -o xnnpack_plugin.o
+	ar rcs libtf-lite_tools.a command_line_flags.o delegate_provider.o default_execution_provider.o utils.o tool_params.o xnnpack_delegate_provider.o
+	ar rcs libtf-lite_core.a xnnpack_plugin.o
+
+install:
+	cp -f libtf-lite_tools.a $(LIB_DIR)
+	cp -f libtf-lite_core.a $(LIB_DIR)
+
+clean:
+	rm -f *.o
+	rm -f *.a

@@ -1,0 +1,33 @@
+# opp_tflite/CMakeLists.txt-dummy
+cmake_minimum_required(VERSION 3.16)
+project(dummy C CXX)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+find_package(Tflite REQUIRED) # TFLITE_INCLUDE_DIR, TFLITE_LIBRARY
+find_package(Opp_tflite REQUIRED)
+
+find_package(OpenCV REQUIRED)
+
+#add_library(tensorflowlite_flex SHARED IMPORTED)
+#set_property(TARGET tensorflowlite_flex PROPERTY
+#  IMPORTED_LOCATION "/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex/libtensorflowlite_flex.so")
+
+include_directories(
+    "${Tflite_INCLUDE_DIR}"
+    "${Opp_tflite_INCLUDE_DIR}"
+)
+add_executable(dummy
+    dummy.cpp
+)
+#message(STATUS "TFLITE_LIBRARY=${TFLITE_LIBRARY}")
+
+# need --no-as-needed option
+# https://github.com/tensorflow/tensorflow/issues/55536
+target_link_libraries(dummy
+    -Wl,--no-as-needed
+    ${Opp_tflite_LIBRARY}       #  順番が大事 ${TFLITE_LIBRARY} より先にします。
+    ${Tflite_LIBRARY}
+    ${OpenCV_LIBS}
+    #tensorflowlite_flex
+)
+

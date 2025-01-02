@@ -1,0 +1,28 @@
+# opp_tflite/CMakeLists.txt-opp_with_lstm_predict
+cmake_minimum_required(VERSION 3.16)
+project(opp_with_lstm_predict C CXX)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+find_package(Tflite REQUIRED) # Tflite_INCLUDE_DIR, Tflite_LIBRARY
+
+find_package( OpenCV REQUIRED )
+
+#add_library(tensorflowlite_flex SHARED IMPORTED)
+#set_property(TARGET tensorflowlite_flex PROPERTY
+#  IMPORTED_LOCATION "/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex/libtensorflowlite_flex.so")
+
+include_directories("${Tflite_INCLUDE_DIR}")
+add_executable(opp_with_lstm_predict
+    opp_with_lstm_predict.cpp
+)
+#message(STATUS "Tflite_LIBRARY=${Tflite_LIBRARY}")
+
+# need --no-as-needed option
+# https://github.com/tensorflow/tensorflow/issues/55536
+target_link_libraries(opp_with_lstm_predict
+    -Wl,--no-as-needed
+    ${Tflite_LIBRARY}
+    ${OpenCV_LIBS}
+    #tensorflowlite_flex
+)
+

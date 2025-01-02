@@ -1,0 +1,41 @@
+# opp_tflite/Makefile-Archive-opp_tflite
+# how to use
+# $ make -fMakefile-Archive-opp_tflite
+# $ make -fMakefile-Archive-opp_tflite install
+# $ make -fMakefile-Archive-opp_tflite clean
+HDIR = -I ./include -I /usr/include/opencv4 -I/home/nishi/usr/local/include/tensorflow-lite -I /home/nishi/usr/local/tflite-test/include
+LIBDIR = -L/home/nishi/usr/local/lib/tensorflow-lite -L/home/nishi/usr/local/tflite-test/lib
+
+OPT0 = -ltensorflow-lite -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_highgui
+
+# minimal option
+#CXX_FLAGS = -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread
+#CXX_FLAGS = -DEIGEN_NEON_GEBP_NR=4 -DTFL_STATIC_LIBRARY_BUILD -pthread
+#CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+#-- label_image option
+CXX_FLAGS = -O3 -DNDEBUG -fPIE -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread -std=gnu++17
+CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DEIGEN_MPL2_ONLY -DNOMINMAX=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+#CC=/usr/bin/c++
+
+TFLITE_SRC_DIR=/home/nishi/local/tensorflow/tensorflow-2.16.2/tensorflow/lite
+
+#EXT_OBJS = command_line_flags.o delegate_provider.o default_execution_provider.o utils.o tool_params.o xnnpack_delegate_provider.o xnnpack_plugin.o
+
+LIB_DIR=/home/nishi/usr/local/lib/opp_tflite
+HD_DIR=/home/nishi/usr/local/include/opp_tflite
+
+archive: opp_tflite.cpp include/opp_tflite/opp_tflite.hpp
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES) opp_tflite.cpp $(HDIR) -o opp_tflite.o
+	ar rcs libopp_tflite.a opp_tflite.o
+
+install:
+	mkdir -p $(LIB_DIR)
+	mkdir -p $(HD_DIR)
+	cp -f libopp_tflite.a $(LIB_DIR)
+	cp -arf include/opp_tflite $(HD_DIR)
+
+clean:
+	rm -f *.o
+	rm -f *.a
