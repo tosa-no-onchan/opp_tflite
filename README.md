@@ -1,4 +1,4 @@
-# opp_tflite  
+# opp_tflite  2.16.2  
 Obstacl Path Planner TensorFlow 2.16.2 Lite C++ library  
 opp with Lstm or Transformer tflite を、ROS2 C++ から predict できるようにしたライブラリー。  
   
