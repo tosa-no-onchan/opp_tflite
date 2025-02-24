@@ -23,7 +23,7 @@ $ make -fMakefile-Archive-opp_tflite clear
 
 3) dummy プログラムのビルドと実行  
 $ make -fMakefile-dummy  
-$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex:$LD_LIBRARY_PATH  
+$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite-flex:$LD_LIBRARY_PATH  
 $ ./dummy  
 
 ##### 参照  
