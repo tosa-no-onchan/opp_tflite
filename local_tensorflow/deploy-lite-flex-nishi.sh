@@ -6,7 +6,8 @@
 
 # $ sudo ./deploy-lite-flex-nishi.sh
 
-VER=2.16.2
+#VER=2.16.2
+VER=2.18.0
 
 #DIST_DIR=/home/nishi/usr/local/share/libtensorflow-cpu-${VER}
 DIST_DIR=/home/nishi/usr/local
@@ -37,3 +38,22 @@ fi
 
 cp -af ${BAZEL_BIN_DIR}/tensorflow/lite/delegates/flex/libtensorflowlite_flex.so ${LIB_DIR}
 
+#find ${ROOT_DIR}/build-nishi/ -name "lib*.a" | xargs -i cp -af {} ${LIB_DIR}
+#cp -af ${ROOT_DIR}/build-nishi/libtensorflow-lite.a ${LIB_DIR}
+#cp -af ${ROOT_DIR}/build-nishi/_deps/flatbuffers-build/libflatbuffers.a ${LIB_DIR}
+
+#pushd $SRC_DIR
+#find lite -follow -type f -name "*.h" -exec cp --parents {} ${HEADER_DIR}/tensorflow \;
+#popd
+
+#pushd ${ROOT_DIR}/build-nishi/
+#pushd abseil-cpp
+#find absl -follow -type f -name "*.h" -exec cp --parents {} $HEADER_DIR \;
+#find ci -follow -type f -name "*.h" -exec cp --parents {} $HEADER_DIR \;
+#popd
+
+#pushd flatbuffers/include
+#find flatbuffers -follow -type f -name "*.h" -exec cp --parents {} $HEADER_DIR \;
+#find flatbuffers -follow -type f -name "*.inc" -exec cp --parents {} $HEADER_DIR \;
+#popd
+#popd
