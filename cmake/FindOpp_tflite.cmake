@@ -1,6 +1,6 @@
 # opp_tflite/cmake/FindOpp_tflite.cmake
 #  here are lib paths
-# /home/nishi/usr/local/lib/tensorflow-lite /home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex
+# /home/nishi/usr/local/lib/tensorflow-lite /home/nishi/usr/local/lib/tensorflow-lite-flex
 # https://qiita.com/shohirose/items/d9bda00a39a113965c5c
 # /usr/share/cmake-3.22/Modules/FindLAPACK.cmake
 
