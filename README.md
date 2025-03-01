@@ -21,10 +21,12 @@ $ make -fMakefile-Archive-opp_tflite
 $ make -fMakefile-Archive-opp_tflite install  
 $ make -fMakefile-Archive-opp_tflite clear  
 
-3) dummy プログラムのビルドと実行  
+3) dummy プログラムのビルドと実行    
 $ make -fMakefile-dummy  
 $ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite-flex:$LD_LIBRARY_PATH  
 $ ./dummy  
+注) aarch64(arm64) では、  
+$ make -fMakefile-dummy-arm64  
 
 ##### 参照  
 [ROS2 自作 Turtlebot3 による 草刈りロボット開発。#9 LSTM で経路計画をする。](https://www.netosa.com/blog/2024/11/ros2-turtlebot3-9-lstm.html)  
