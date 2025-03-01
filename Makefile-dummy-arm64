@@ -1,0 +1,128 @@
+# opp_tflite/Makefile-dummy
+# for tensorflow 2.18.0
+# how to use
+# $ make -fMakefile-dummy
+FILE = dummy.cpp
+HDIR = -I ./include -I /usr/include/opencv4 -I/home/nishi/usr/local/include/tensorflow-lite -I /home/nishi/usr/local/tflite-test/include -I /usr/include
+#HDIR2 = -I /home/nishi/usr/local/include/tensorflow-2.16.2-cpu
+LIBDIR = -L/home/nishi/usr/local/lib/tensorflow-lite -L/home/nishi/usr/local/tflite-test/lib -L/home/nishi/usr/local/lib/tensorflow-lite-flex
+
+OPT0 = -ltensorflow-lite -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_highgui
+OPT_FLEX = -ltensorflowlite_flex
+
+# minimal option
+#CXX_FLAGS = -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread
+#CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+# label_image option
+# 2.16.2
+#CXX_FLAGS = -O3 -DNDEBUG -fPIE -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DTFL_STATIC_LIBRARY_BUILD -pthread -std=gnu++17
+# 2.18.0
+CXX_FLAGS = -O3 -DNDEBUG -std=gnu++17 -fPIE -DEIGEN_NEON_GEBP_NR=4 -DTFLITE_KERNEL_USE_XNNPACK -DTFLITE_BUILD_WITH_XNNPACK_DELEGATE -DXNNPACK_DELEGATE_ENABLE_QS8 -DXNNPACK_DELEGATE_ENABLE_QU8 -DXNNPACK_DELEGATE_USE_LATEST_OPS -DXNNPACK_DELEGATE_ENABLE_SUBGRAPH_RESHAPING -DTFL_STATIC_LIBRARY_BUILD -pthread
+
+CXX_DEFINES = -DCPUINFO_SUPPORTED_PLATFORM=1 -DEIGEN_MPL2_ONLY -DNOMINMAX=1 -DPTHREADPOOL_NO_DEPRECATED_API=1
+
+#CC=/usr/bin/c++
+
+INC = include/opp_tflite
+
+#SRCS=predict-test.cpp opp_with_lstm_predict.cpp
+#OBJS = $(SRCS:%.cpp=%.o)
+
+# use for label_image base
+# for arm64
+opt_arm64 = -lprofiling_info_proto -lprotobuf -labsl_flags -labsl_flags_internal -labsl_flags_marshalling \
+	-labsl_flags_reflection -labsl_flags_config -labsl_flags_program_name -labsl_flags_private_handle_accessor \
+	-labsl_flags_commandlineflag -labsl_flags_commandlineflag_internal -labsl_raw_hash_set -labsl_hashtablez_sampler \
+	-labsl_hash -labsl_city -labsl_low_level_hash -labsl_status -labsl_cord -labsl_bad_optional_access \
+	-labsl_cordz_info -labsl_cord_internal -labsl_cordz_functions -labsl_exponential_biased -labsl_cordz_handle \
+	-labsl_crc_cord_state -labsl_crc32c -labsl_crc_internal -labsl_crc_cpu_detect -labsl_str_format_internal \
+	-labsl_strerror -labsl_synchronization -labsl_stacktrace -labsl_symbolize -labsl_debugging_internal \
+	-labsl_demangle_internal -labsl_graphcycles_internal -labsl_kernel_timeout_internal -labsl_malloc_internal \
+	-labsl_time -labsl_strings -labsl_string_view -labsl_strings_internal -labsl_throw_delegate -labsl_base \
+	-labsl_spinlock_wait -lrt -labsl_int128 -labsl_civil_time -labsl_time_zone -labsl_bad_variant_access \
+	-labsl_raw_logging_internal -labsl_log_severity -lfarmhash -lfft2d_fftsg2d -lfft2d_fftsg \
+	-lm \
+	-ldl \
+	-lxnnpack-delegate -lflatbuffers -leight_bit_int_gemm -lruy_context_get_ctx -lruy_context \
+	-lruy_frontend -lruy_kernel_arm -lruy_kernel_avx -lruy_kernel_avx2_fma -lruy_kernel_avx512 \
+	-lruy_apply_multiplier -lruy_pack_arm -lruy_pack_avx -lruy_pack_avx2_fma -lruy_pack_avx512 \
+	-lruy_prepare_packed_matrices -lruy_trmul -lruy_ctx -lruy_allocator -lruy_prepacked_cache \
+	-lruy_system_aligned_alloc -lruy_have_built_path_for_avx -lruy_have_built_path_for_avx2_fma -lruy_have_built_path_for_avx512 \
+	-lruy_thread_pool -lruy_blocking_counter -lruy_wait -lruy_denormal -lruy_block_map -lruy_tune -lruy_cpuinfo \
+	-lruy_profiler_instrumentation -pthread -lXNNPACK -lmicrokernels-prod -lpthreadpool \
+	-lkleidiai \
+	-lm -lcpuinfo -lprotobuf 
+
+opt_amd64 = -lprofiling_info_proto -lprotobuf -labsl_flags -labsl_flags_internal -labsl_flags_marshalling \
+	-labsl_flags_reflection -labsl_flags_config -labsl_flags_program_name -labsl_flags_private_handle_accessor \
+	-labsl_flags_commandlineflag -labsl_flags_commandlineflag_internal -labsl_raw_hash_set -labsl_hashtablez_sampler \
+	-labsl_hash -labsl_city -labsl_low_level_hash -labsl_status -labsl_cord -labsl_bad_optional_access \
+	-labsl_cordz_info -labsl_cord_internal -labsl_cordz_functions -labsl_exponential_biased -labsl_cordz_handle \
+	-labsl_crc_cord_state -labsl_crc32c -labsl_crc_internal -labsl_crc_cpu_detect -labsl_str_format_internal \
+	-labsl_strerror -labsl_synchronization -labsl_stacktrace -labsl_symbolize -labsl_debugging_internal \
+	-labsl_demangle_internal -labsl_graphcycles_internal -labsl_kernel_timeout_internal -labsl_malloc_internal \
+	-labsl_time -labsl_strings -labsl_string_view -labsl_strings_internal -labsl_throw_delegate -labsl_base \
+	-labsl_spinlock_wait -lrt -labsl_int128 -labsl_civil_time -labsl_time_zone -labsl_bad_variant_access \
+	-labsl_raw_logging_internal -labsl_log_severity -lfarmhash -lfft2d_fftsg2d -lfft2d_fftsg \
+	-lm \
+	-ldl \
+	-lxnnpack-delegate -lflatbuffers -leight_bit_int_gemm -lruy_context_get_ctx -lruy_context \
+	-lruy_frontend -lruy_kernel_arm -lruy_kernel_avx -lruy_kernel_avx2_fma -lruy_kernel_avx512 \
+	-lruy_apply_multiplier -lruy_pack_arm -lruy_pack_avx -lruy_pack_avx2_fma -lruy_pack_avx512 \
+	-lruy_prepare_packed_matrices -lruy_trmul -lruy_ctx -lruy_allocator -lruy_prepacked_cache \
+	-lruy_system_aligned_alloc -lruy_have_built_path_for_avx -lruy_have_built_path_for_avx2_fma -lruy_have_built_path_for_avx512 \
+	-lruy_thread_pool -lruy_blocking_counter -lruy_wait -lruy_denormal -lruy_block_map -lruy_tune -lruy_cpuinfo \
+	-lruy_profiler_instrumentation -pthread -lXNNPACK -lmicrokernels-prod -lpthreadpool \
+	-lm -lcpuinfo -lprotobuf
+
+opt_2_16_2 = -labsl_flags -labsl_flags_internal -labsl_flags_marshalling \
+	-labsl_flags_reflection -labsl_flags_config -labsl_flags_program_name \
+	-labsl_flags_private_handle_accessor -labsl_flags_commandlineflag \
+	-labsl_flags_commandlineflag_internal -labsl_raw_hash_set \
+	-labsl_hashtablez_sampler -labsl_hash -labsl_city -labsl_low_level_hash \
+	-labsl_status -labsl_cord -labsl_bad_optional_access -labsl_cordz_info \
+	-labsl_cord_internal -labsl_cordz_functions \
+	-labsl_exponential_biased -labsl_cordz_handle \
+	-labsl_crc_cord_state -labsl_crc32c -labsl_crc_internal -labsl_crc_cpu_detect \
+	-labsl_str_format_internal -labsl_strerror -labsl_synchronization -labsl_stacktrace \
+	-labsl_symbolize -labsl_debugging_internal \
+	-labsl_demangle_internal -labsl_graphcycles_internal \
+	-labsl_kernel_timeout_internal -labsl_malloc_internal \
+	-labsl_time -labsl_strings -labsl_string_view -labsl_strings_internal \
+	-labsl_throw_delegate -labsl_base -labsl_spinlock_wait -lrt -labsl_int128 \
+	-labsl_civil_time -labsl_time_zone -labsl_bad_variant_access -labsl_raw_logging_internal \
+	-labsl_log_severity -lfarmhash -lfft2d_fftsg2d -lfft2d_fftsg \
+	-lm -lflatbuffers -leight_bit_int_gemm -lruy_context_get_ctx -lruy_context \
+	-lruy_frontend -lruy_kernel_arm -lruy_kernel_avx -lruy_kernel_avx2_fma \
+	-lruy_kernel_avx512 -lruy_apply_multiplier -lruy_pack_arm -lruy_pack_avx \
+	-lruy_pack_avx2_fma -lruy_pack_avx512 -lruy_prepare_packed_matrices -lruy_trmul \
+	-lruy_ctx -lruy_allocator -lruy_prepacked_cache -lruy_system_aligned_alloc \
+	-lruy_have_built_path_for_avx -lruy_have_built_path_for_avx2_fma \
+	-lruy_have_built_path_for_avx512 -lruy_thread_pool \
+	-lruy_blocking_counter -lruy_wait -lruy_denormal -lruy_block_map \
+	-lruy_tune -lruy_cpuinfo -lruy_profiler_instrumentation \
+	-pthread -ldl -lXNNPACK -lpthreadpool -lm -lcpuinfo
+
+
+# use for label_image append
+opt_ext = -ltf-lite_tools -ltf-lite_core
+
+#.PHONY: predict-test opp_with_lstm_predict link
+link: dummy.o opp_tflite.o
+	$(CXX) -Wl,--no-as-needed dummy.o opp_tflite.o -o dummy $(LIBDIR) $(OPT_FLEX) $(OPT0) $(opt_arm64) $(opt_ext)
+
+#	$(CXX) -Wl,--no-as-needed dummy.o opp_tflite.o -o dummy $(LIBDIR) $(OPT_FLEX) $(OPT0) $(opt) $(opt_ext)
+#	$(CXX) -Wl,--no-as-needed dummy.o opp_tflite.o -o dummy $(LIBDIR) $(OPT_FLEX) $(OPT0) $(opt) $(opt_ext)
+
+dummy.o: dummy.cpp $(INC)/opp_tflite.hpp
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  dummy.cpp $(HDIR) -o dummy.o
+
+opp_tflite.o: opp_tflite.cpp $(INC)/opp_tflite.hpp
+	$(CXX) -c -Wall -std=c++17 $(CXX_FLAGS) $(CXX_DEFINES)  opp_tflite.cpp $(HDIR) -o opp_tflite.o
+
+
+clean:
+	rm *.o
+
+

@@ -23,20 +23,20 @@
 
 # export CPATH=/home/nishi/usr/local/include/tensorflow-2.16.2:$CPATH
 # export LIBRARY_PATH=/home/nishi/usr/local/share/libtensorflow-cpu-2.16.2/lib:$LIBRARY_PATH
-$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex:$LD_LIBRARY_PATH
+$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite-flex:$LD_LIBRARY_PATH
 
 
 1) lib path
 export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite:$LD_LIBRARY_PATH
 
 2) include path
- /home/nishi/usr/local/include/tensorflow-2.16.2
+ /home/nishi/usr/local/include/tensorflow-2.18.0
 
 1. build
-   Makefile を作ったので、
-$ make
+   Makefile を作ったので、Makefile-Archive-opp_tflite を使います。
+$ make -fMakefile-Archive-opp_tflite
 2. run
-$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex:$LD_LIBRARY_PATH
+$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite-flex:$LD_LIBRARY_PATH
 $ ./opp_with_lstm_predict
 */
 

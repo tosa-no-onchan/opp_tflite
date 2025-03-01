@@ -5,7 +5,7 @@
 $ make -fMakefile-dummy
 
 2) run 
-$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex:$LD_LIBRARY_PATH
+$ export LD_LIBRARY_PATH=/home/nishi/usr/local/lib/tensorflow-lite-flex:$LD_LIBRARY_PATH
 $ ./dummy
 */
 #include <iostream>
@@ -55,11 +55,13 @@ void one_shot(opp_tflite::Opp_Tflite &opp_tfl,std::string image,int x_interval,i
 }
 
 int main(int argc, char* argv[]) {
+    std::string ros_workspace="colcon_ws-humble";
+    //std::string ros_workspace="colcon_ws-jazzy";
     std::vector<std::string> images ={
-        "/home/nishi/colcon_ws/src/turtlebot3_navi_my/ml_data/image/1.jpg",
-        "/home/nishi/colcon_ws/src/turtlebot3_navi_my/ml_data/image/2.jpg",
-        "/home/nishi/colcon_ws/src/turtlebot3_navi_my/ml_data/image/3.jpg",
-        "/home/nishi/colcon_ws/src/turtlebot3_navi_my/ml_data/image/4.jpg",
+        "/home/nishi/"+ros_workspace+"/src/turtlebot3_navi_my/ml_data/image/1.jpg",
+        "/home/nishi/"+ros_workspace+"/src/turtlebot3_navi_my/ml_data/image/2.jpg",
+        "/home/nishi/"+ros_workspace+"/src/turtlebot3_navi_my/ml_data/image/3.jpg",
+        "/home/nishi/"+ros_workspace+"/src/turtlebot3_navi_my/ml_data/image/4.jpg",
     };
 
     opp_tflite::Settings s;

@@ -7,7 +7,7 @@ find_package(Tflite REQUIRED) # Tflite_INCLUDE_DIR, Tflite_LIBRARY
 
 #add_library(tensorflowlite_flex SHARED IMPORTED)
 #set_property(TARGET tensorflowlite_flex PROPERTY
-#  IMPORTED_LOCATION "/home/nishi/usr/local/lib/tensorflow-2.16.2-lite-flex/libtensorflowlite_flex.so")
+#  IMPORTED_LOCATION "/home/nishi/usr/local/lib/tensorflow-lite-flex/libtensorflowlite_flex.so")
 
 include_directories("${Tflite_INCLUDE_DIR}")
 add_executable(predict-test
